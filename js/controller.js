@@ -394,6 +394,9 @@ function stepInitialize() {
       x_1_2 = mapX(x2, y2)
       y_1_2 = mapY(x2, y2)
       setCenterFrame(gameState[currentState]['name'], teamNames[gameState[currentState]['team']])
+      if(gameState[currentState]['name'] == 'Ball in play'){
+        setCenterFrame(gameState[currentState]['name'], '')
+      }
     }
   } else {
     if (gameState[currentState]['type'] == 'service_taken') {
@@ -445,6 +448,9 @@ function stepInitialize() {
       x_1_2 = mapX(x2, y2)
       y_1_2 = mapY(x2, y2)
       setCenterFrame(gameState[currentState]['name'], teamNames[gameState[currentState]['team']])
+      if(gameState[currentState]['name'] == 'Ball in play') {
+        setCenterFrame(gameState[currentState]['name'], '')
+      }
     }
   }
 }
@@ -638,6 +644,11 @@ function setCenterFrame(title, content) {
   document.getElementById('ball_shadow').setAttribute('cy', 100000)
   document.getElementById('center_rect').setAttribute('width', max(380, titleWidth))
   document.getElementById('center_rect').setAttribute('x', 400 - max(380, titleWidth) / 2)
+  if(content == ''){
+    document.getElementById('center_text').setAttribute('y', 330)
+  } else{
+    document.getElementById('center_text').setAttribute('y', 310)
+  }
 }
 function resetCenterFrame() {
   document.getElementById('center_rect').setAttribute('fill-opacity', 0)
