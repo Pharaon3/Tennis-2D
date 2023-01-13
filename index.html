@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Tennis 3D version</title>
+  <meta name="title" content="Tennis SVG Test" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./js/controller.js"></script>
+</head>
+
+<body onload="load()">
+  <style>
+    @font-face {
+      font-family: "InriaSans";
+      src: url("./fonts/InriaSans-Regular.ttf");
+    }
+
+    @font-face {
+      font-family: "InriaSans-Bold";
+      src: url("./fonts/InriaSans-Bold.ttf");
+    }
+  </style>
+  <div style="
+        display: flex;
+        align-items: center;
+        align-content: center;
+        width: 100%;
+        height: 97vh;
+        justify-content: center;
+      ">
+    <svg id='svg' width="800" height="425">
+      <filter id="shadow" color-interpolation-filters="sRGB">
+        <feDropShadow dx="2" dy="2" stdDeviation="2" flood-opacity="0.7" />
+      </filter>
+      <defs>
+        <linearGradient id="homePossession" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: rgb(255, 255, 255); stop-opacity: 0.2;" />
+          <stop offset="100%" style="stop-color: rgb(0, 0, 0); stop-opacity: 0.7;" />
+        </linearGradient>
+        <linearGradient id="awayStateGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: rgb(255, 255, 255); stop-opacity: 0;" />
+          <stop offset="100%" style="stop-color: rgb(0, 255, 0); stop-opacity: 0.5;" />
+        </linearGradient>
+        <linearGradient id="homeAttack" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: green; stop-opacity: 0;" />
+          <stop offset="100%" style="stop-color: orange; stop-opacity: 0.5;" />
+        </linearGradient>
+        <linearGradient id="homeSafe" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: rgb(255, 255, 255); stop-opacity: 0;" />
+          <stop offset="100%" style="stop-color: rgb(0, 255, 0); stop-opacity: 0.4;" />
+        </linearGradient>
+        <linearGradient id="awayPossession" x1="100%" y1="0%" x2="0%" y2="0%">
+          <stop offset="0%" style="stop-color: rgb(255, 255, 255); stop-opacity: 0.2;" />
+          <stop offset="100%" style="stop-color: rgb(0, 0, 0); stop-opacity: 0.7;" />
+        </linearGradient>
+        <linearGradient id="awayAttack" x1="100%" y1="0%" x2="0%" y2="0%">
+          <stop offset="0%" style="stop-color: green; stop-opacity: 0;" />
+          <stop offset="100%" style="stop-color: orange; stop-opacity: 0.5;" />
+        </linearGradient>
+        <linearGradient id="awaySafe" x1="100%" y1="0%" x2="0%" y2="0%">
+          <stop offset="0%" style="stop-color: rgb(255, 255, 255); stop-opacity: 0;" />
+          <stop offset="100%" style="stop-color: rgb(0, 255, 0); stop-opacity: 0.4;" />
+        </linearGradient>
+        <linearGradient id="homeKick" x1="50%" y1="0%" x2="0%" y2="0%">
+          <stop offset="0%" style="stop-color: rgb(255, 255, 255); stop-opacity: 0;" />
+          <stop offset="100%" style="stop-color: rgb(0, 0, 0); stop-opacity: 0.4;" />
+        </linearGradient>
+        <linearGradient id="homeTopKick" x1="50%" y1="50%" x2="0%" y2="0%">
+          <stop offset="0%" style="stop-color: rgb(255, 255, 255); stop-opacity: 0;" />
+          <stop offset="100%" style="stop-color: rgb(0, 0, 0); stop-opacity: 0.4;" />
+        </linearGradient>
+        <linearGradient id="homeBottomKick" x1="50%" y1="0%" x2="0%" y2="50%">
+          <stop offset="0%" style="stop-color: rgb(255, 255, 255); stop-opacity: 0;" />
+          <stop offset="100%" style="stop-color: rgb(0, 0, 0); stop-opacity: 0.4;" />
+        </linearGradient>
+        <linearGradient id="awayKick" x1="50%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: rgb(255, 255, 255); stop-opacity: 0;" />
+          <stop offset="100%" style="stop-color: rgb(0, 0, 0); stop-opacity: 0.4;" />
+        </linearGradient>
+        <linearGradient id="awayTopKick" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: rgb(255, 255, 255); stop-opacity: 0;" />
+          <stop offset="100%" style="stop-color: rgb(0, 0, 0); stop-opacity: 0.4;" />
+        </linearGradient>
+        <linearGradient id="awayBottomKick" x1="50%" y1="50%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color: rgb(255, 255, 255); stop-opacity: 0;" />
+          <stop offset="100%" style="stop-color: rgb(0, 0, 0); stop-opacity: 0.4;" />
+        </linearGradient>
+        <linearGradient id="none" x1="100%" y1="0%" x2="0%" y2="0%">
+          <stop offset="0%" style="stop-color: rgb(255, 255, 255); stop-opacity: 0;" />
+          <stop offset="100%" style="stop-color: rgb(255, 0, 0); stop-opacity: 0;" />
+        </linearGradient>
+      </defs>
+      <g id='scale' transform='scale(1)'>
+        <g id="pitch">
+          <image href="./media/pitch.png" x="0" y="0" width="800" />
+          <!-- <polygon id = "pitch-poly" points="123, 238 677, 238 750, 350 50, 350 " style="fill:red;fill-opacity:0.5;" /> -->
+        </g>
+        <g id="Ball_Begin">
+          <polygon id="homeKickPolygon" points="500, 500 726, 476 782, 536" style="fill: url(#none);" />
+          <polygon id="awayKickPolygon" points="500, 500 210, 476 160, 536" style="fill: url(#none);" />
+          <ellipse id="ball_shadow" cx="5000" cy="5000" rx="5" ry="5" stroke="none" fill="grey"
+            style="fill: grey; fill-opacity: 0.5;" />
+          <image id="ball" href="./media/ball1.png" x="1005" y="2000" width="10" />
+        </g>
+        <g id="Alert_Begin">
+          <rect id='stateBoard' x="450" y="508" width="0" height="0" rx="3" ry="3" style="fill:black;" />
+          <rect id='actionBoard' x="450" y="508" width="0" height="0" rx="3" ry="3"
+            style="fill:rgb(0, 20, 0); fill-opacity: 0.5;" />
+          <rect id='cardBoard' x="450" y="508" width="0" height="0" rx="3" ry="3"
+            style="fill:rgb(255, 0, 0); fill-opacity: 0.9;" />
+          <g id='subsitution'>
+            <polygon id="substitutionOut" points="100, 200 300, 200 250, 240 100, 240 " style="fill:black;"
+              fill-opacity="0" />
+            <text id="substitutionOutPlayer" fill="#fff" font-size="16" font-family="InriaSans" x="115" y="225"
+              fill-opacity="0.9" text-anchor="start"> </text>
+            <polygon id="substitutionIn" points="700, 593 850, 593 850, 633 650, 633 " style="fill:black;"
+              fill-opacity="0" />
+            <text id="substitutionInPlayer" fill="#fff" font-size="16" font-family="InriaSans" x="835" y="618"
+              fill-opacity="0.9" text-anchor="end"> </text>
+          </g>
+          <g id='homeStateG' transform='translate(120, 270)' style="display: none;">
+            <line id = 'homeStateLine' x1="0" y1="-15" x2="0" y2="15" style="
+                stroke: rgb(205, 205, 255);
+                stroke-width: 2;
+              " stroke-opacity='1' />
+            <text id="homeState" fill="#fff" font-size="14" font-family="InriaSans" x="5" y="-3" fill-opacity="0.9"
+              text-anchor="start"> 
+            </text>
+            <text id="homeStateN" fill="#a1e36f" font-size="14" font-family="InriaSans" x="5" y="12" fill-opacity="0.9"
+              text-anchor="start"> 
+            </text>
+            <text id="homeStateN1" fill="#a1e36f" font-size="14" font-family="InriaSans" x="5" y="24" fill-opacity="0.9"
+              text-anchor="start"> 
+            </text>
+          </g>
+          <g id='awayStateG' transform='translate(710, 310)' style="display: none;">
+            <line id = 'awayStateLine' x1="0" y1="-15" x2="0" y2="15" style="
+                stroke: rgb(205, 205, 255);
+                stroke-width: 2;
+              " stroke-opacity='1' />
+            <text id="awayState" fill="#fff" font-size="14" font-family="InriaSans" x="-5" y="-3" fill-opacity="0.9"
+              text-anchor="end"> 
+            </text>
+            <text id="awayStateN" fill="#a1e36f" font-size="14" font-family="InriaSans" x="-5" y="12" fill-opacity="0.9"
+              text-anchor="end"> 
+            </text>
+            <text id="awayStateN1" fill="#a1e36f" font-size="14" font-family="InriaSans" x="-5" y="24" fill-opacity="0.9"
+              text-anchor="end"> 
+            </text>
+          </g>
+
+
+          <rect id="center_rect" x="210" y="200" width="380" height="60" style="
+              fill: black;
+              stroke: grey;
+              stroke-width: 0;
+              stroke-opacity: 1;
+            " fill-opacity='0' />
+          <text id="center_text" fill="#fff" font-size="38" font-family="InriaSans" x="400" y="260" fill-opacity="1"
+            text-anchor="middle"></text>
+          <text id="bottom_text" fill="#fff" font-size="30" font-family="InriaSans" x="400" y="300" fill-opacity="0.71"
+            text-anchor="middle"></text>
+
+          <g id="stateLabels" transform='translate(400,500)' filter="url(#shadow)" style='display: none;'>
+            <rect id='stateRect' x="-150" y="-45" width="150" height="40" rx="20" ry="20" fill-opacity='0'
+              fill='cyan' />
+            <circle id='jerseyCircle' cx='-20' cy='-25' r='20' fill='#000' fill-opacity='0' />
+            <g id='stateJersey' transform='translate(-20, -25)'>
+              <g fill="none" fill-rule="evenodd" filter="url(#shadow)" transform="scale(0.1)">
+                <g transform="translate(-150, -150)">
+                  <defs>
+                    <radialGradient cx="50%" cy="0%" fx="50%" fy="0%" r="99.24%"
+                      gradientTransform="matrix(0 1 -.6221 0 .5 -.5)" id="5_no_radialGradient-1">
+                      <stop stop-opacity=".42" offset="0%"></stop>
+                      <stop stop-opacity=".55" offset="100%"></stop>
+                    </radialGradient>
+                    <path
+                      d="M97.75 274.21h-.05c43.2-.1 73.13-1.48 89.77-4.13-1.07-32.56-1.42-53.16-1.06-61.8l.05-1.17c.55-12.57 1.54-25.25 1.03-46.2-.22-12.15 2.97-34.04 2.17-36.65a19.64 19.64 0 011.55-1.93v-2.42c.95-1.22 4.24-9.09 4.24-10.52-1.56-.86-7.18-2.75-9.38-8.65-2.2-5.9-7.8-25.12-9.28-29.88-1.48-4.75-3.97-15.4-3.97-32.95-.73-14.59-1.42-19-4.04-19.87-2.63-.87-19.13-6.32-29.59-11.18-1.08-.5-1.69-.72-4.03-1.25-.77-1.3-3.86-3.56-5.72-5.37-5.98-1.3-9.3 3.06-31.71 3.07C75.3 3.3 72-1.06 66.02.24c-1.86 1.81-4.96 4.07-5.73 5.37-2.34.53-2.94.75-4.03 1.25-10.45 4.86-26.96 10.31-29.58 11.18-2.63.88-3.32 5.28-4.04 19.87 0 17.55-2.5 28.2-3.97 32.95-1.48 4.76-7.1 23.98-9.3 29.88-2.19 5.9-7.8 7.79-9.37 8.65 0 1.43 3.3 9.3 4.24 10.52v2.42c.18.15.7.8 1.55 1.93-.8 2.6 2.4 24.5 2.17 36.64-.52 21.6.54 34.41 1.08 47.37.36 8.65.01 29.25-1.05 61.8 16.63 2.66 46.56 4.04 89.76 4.14h-.05.05z"
+                      id="5_no_path-1"></path>
+                  </defs>
+                  <g fill="none" fill-rule="evenodd">
+                    <g transform="translate(58 20)">
+                      <mask id="5_no_mask-1" fill="#fff">
+                        <use xlink:href="#5_no_path-1"></use>
+                      </mask>
+                      <use id="homeBaseColorS" fill="#00ff00" xlink:href="#5_no_path-1"></use>
+                    </g>
+                    <g transform="">
+                      <g>
+                        <path
+                          d="M84.16 39.3c-.47.4-.92 1.57-1.34 3.53-.47 1.98-.93 8.2-1.18 15.06 0 13.29-1.37 24.43-4.21 33.3-3.45 12.23-6.56 21.56-8.58 27.76-1.78 7.1-6.7 9.33-9.85 10.82 0 .98 2.2 6.8 3.63 9.22 9.46-3.62 11.24-8.95 13.68-15.64 2.44-6.7 6.28-23.93 8.04-28.73 1.75-4.79 3.27-12.74 4.58-20.1 2.1-13.91 1.68-16.57 1.68-23.8 0-4.81.62-9.16 2.3-14.52-1.35.42-3.26 1.05-5.03 1.65-1.97.67-2.8.7-3.72 1.46zm143.1 0c.47.4.91 1.57 1.34 3.53.46 1.98.92 8.2 1.17 15.06 0 13.29 1.37 24.43 4.22 33.3 3.44 12.23 6.55 21.56 8.57 27.76 1.78 7.1 6.7 9.33 9.85 10.82 0 .98-2.2 6.8-3.63 9.22-9.46-3.62-11.23-8.95-13.68-15.64-2.44-6.7-6.28-23.93-8.03-28.73-1.76-4.79-3.27-12.74-4.59-20.1-2.1-13.91-1.67-16.57-1.67-23.8 0-4.81-.63-9.16-2.31-14.52 1.35.42 3.26 1.05 5.03 1.65 1.98.67 2.8.7 3.72 1.46z"
+                          fill="#ffffff"></path>
+                        <path
+                          d="M187.4 20.25a98.58 98.58 0 003.64 3.23c.88.73 4.31 4.05 5.09 5.14 0 7.58-.46 9.88-6.08 17.5-8.33 11.3-24.26 24.13-34.29 30.9-10.32-6.75-26.05-19.6-34.38-30.9-5.63-7.62-6.08-9.92-6.08-17.5.77-1.09 4.2-4.4 5.08-5.14.88-.74 1.97-1.68 3.65-3.23 6.27-1.3 8.8 2.88 30.34 3.05h.63c21.64-.16 26.12-4.34 32.4-3.05zm1.38 5.26c-.57-.27-1.92-.04-3.76.55-4.66 1.38-12.12 3.63-29.53 3.63-17.41 0-24.88-2.25-29.53-3.63-1.85-.6-3.2-.82-3.77-.55-.3 1.31.05 5.47 2.3 10.74 2.27 5.27 10.02 13.27 15.8 18.59 3.87 3.54 8.95 7.58 15.26 12.1l-.13-.09v.1l.07-.05.06.04v-.09l.57-.4a166 166 0 0014.13-11.22l.43-.4c5.79-5.31 13.54-13.31 15.8-18.58 2.25-5.27 2.6-9.43 2.3-10.74z"
+                          fill="#ffffff"></path>
+                      </g>
+                      <g>
+                        <path
+                          d="M155.76 288.84c-37.08 0-60.1 0-89.76-3.84v4.84c28.65 4.71 59 4.14 89.76 4.14 30.79 0 61.12.57 89.77-4.14V285c-32.73 3.83-52.7 3.84-89.77 3.84"
+                          fill-opacity=".1" fill="#E6E6E6"></path>
+                        <path
+                          d="M179.43 20.84c3.56-.87 6.15-1.06 7.76-.58 1.14 1.27 1.61 3.32 1.61 5.17-1.6-.52-5.1 1.22-9.2 2.02-7.27 1.67-15.75 2.18-24.4 2.18h.6-.6.6c-8.65 0-17.13-.51-24.4-2.18-4.1-.8-7.59-2.54-9.2-2.02 0-1.85.47-3.9 1.61-5.17 1.61-.48 4.2-.29 7.76.58 6.3 1.63 14.28 2.46 23.93 2.48 9.66-.02 17.63-.85 23.93-2.48z"
+                          fill-opacity=".3" fill="#000"></path>
+                        <path
+                          d="M127.02 6.97c1.84-.58 3.2-.8 3.76-.54.3 1.31-.05 5.46-2.3 10.74-2.26 5.27-10.01 13.27-15.8 18.59a165.79 165.79 0 01-15.26 12.1l.13-.1v.1l-.06-.05-.07.05v-.1l.13.1a165.92 165.92 0 01-15.25-12.1c-5.8-5.32-13.54-13.32-15.8-18.6-2.26-5.27-2.61-9.42-2.3-10.73.56-.27 1.91-.04 3.76.54 4.65 1.4 12.12 3.64 29.53 3.64 17.4 0 24.87-2.25 29.53-3.64"
+                          fill="url(#5_no_radialGradient-1)" transform="translate(58 19.08)"></path>
+                        <path
+                          d="M117.34 25.57c-.36.43-2.53 2.7-2.53 2.92-.01 4-.03 7.42 1.85 11.25 1.88 3.82 6.33 9.52 9.56 13.01 6.83 7.36 15.89 15.67 29.54 24.87 9.77-6.64 21.16-15.84 30.15-25.67l.78-.87c7-8.48 9.8-12.78 9.8-18.47 0-.69.2-3.26.16-4 0-.37-.92-1.44-2.77-3.21"
+                          stroke-opacity=".45" stroke="#050505"></path>
+                        <path
+                          d="M62.31 139.53c9.42-3.37 11.5-8.46 13.31-13.13a80.77 80.77 0 003.27-10.19c.86-3.4 2.41-8.44 3.38-12.5 1.64-6.86 3.71-11.33 5.06-18.03 1.09-5.38 3.6-19.25 3.73-25.9.14-6.63.02-9.52.1-11.15.2-4.59 1.11-9.1 2.73-13.57m155.2 104.4c-9.43-3.36-11.5-8.45-13.32-13.12a80.77 80.77 0 01-3.27-10.2c-.86-3.4-2.4-8.43-3.38-12.49-1.64-6.87-3.71-11.34-5.06-18.03-1.08-5.38-3.6-19.26-3.73-25.9-.13-6.63-.01-9.53-.09-11.16-.2-4.58-1.12-9.1-2.74-13.56"
+                          stroke-opacity=".5" stroke="#000" stroke-linejoin="round"></path>
+                        <path stroke-opacity=".5" stroke="#000"
+                          d="M155.7 293.71c42.8-.1 72.54-1.45 89.25-4.06-1.05-32.32-1.4-52.79-1.04-61.4l.05-1.16.33-6.98c.53-10.52 1.11-22.1.7-39.2-.12-6.46.73-15.68 1.43-23.3.6-6.6 1.13-12 .84-13.65a31.6 31.6 0 011.45-1.84v-2.4c.7-.61 3.88-8.02 4.21-10.04l-.54-.26c-2.26-1.07-6.82-3.26-8.77-8.5-1.64-4.4-5.16-16.14-7.47-23.85-.8-2.66-1.45-4.84-1.83-6.06-1.48-4.77-4-15.46-4-33.09-.36-7.41-.72-12.18-1.33-15.19-.28-1.35-.6-2.33-1-3.02a2.6 2.6 0 00-1.56-1.26c-3.18-1.05-19.17-6.37-29.41-11.12a4.42 4.42 0 01-1.44-.83c-.37-.3-.84-.66-2.16-1.36-.78-.88-2.04-2-3.32-3.13-.85-.76-1.7-1.52-2.44-2.23-2.53-.5-4.64-.01-7.84.7-4.54 1-11.21 2.47-24.08 2.47-12.85 0-19.46-1.47-23.97-2.47-3.2-.71-5.32-1.2-7.91-.7-.73.7-1.6 1.46-2.47 2.2-1.32 1.14-2.62 2.26-3.5 3.28-1.14.6-1.61.96-1.98 1.25-.4.31-.69.53-1.44.81-10.23 4.75-26.25 10.08-29.63 11.2-.54.18-.98.55-1.35 1.19-.41.69-.73 1.67-1 3.02-.62 3-.97 7.78-1.34 15.19 0 17.63-2.51 28.32-4 33.1-.38 1.21-1.03 3.4-1.83 6.05-2.3 7.7-5.83 19.45-7.46 23.84-1.96 5.25-6.52 7.44-8.78 8.51l-.54.26c.34 2.02 3.5 9.43 4.2 10.05v2.4c.28.3.77.9 1.54 2.28-.37 1.2.16 6.6.76 13.2.7 7.62 1.55 16.84 1.43 23.3-.41 17.1.17 28.69.7 39.2.14 2.76.27 5.45.38 8.14.36 8.61.01 29.08-1.04 61.4 16.54 2.59 45.87 3.94 89.2 4.06z">
+                        </path>
+                      </g>
+                    </g>
+                  </g>
+                  <text y="35%" x="50%" text-anchor="middle"
+                    class="sr-jersey3d__player-number srt-stroke-soccer-promotion-5" font-size="30" stroke-width="2"
+                    font-weight="300" dy="0.1em" dx="-0.05em" letter-spacing="2" fill="#ffffff"></text>
+                  <text y="35%" x="50%" text-anchor="middle" class="sr-jersey3d__player-number-overlay" font-size="30"
+                    stroke-width="0" font-weight="300" dy="0.1em" dx="-0.05em" letter-spacing="2" fill="#ffffff"
+                    stroke="transparent"></text>
+                </g>
+              </g>
+            </g>
+            <text id="state" fill="#fff" font-size="14" font-family="InriaSans" x="-45" y="-28" fill-opacity="0.9"
+              text-anchor="end"> State </text>
+            <text id="teamName" fill="#fff" font-size="14" font-family="InriaSans" x="-45" y="-12" fill-opacity="0.9"
+              text-anchor="end" font-weight="bold"> Home </text>
+          </g>
+        </g>
+        <g id="Text Begin">
+          <path d="M 437 15 L 495 15 A 12 12, 0, 0, 1, 495 39 L 437 39 Z" fill="white" fill-opacity='0.3' />
+          <path d="M 363 15 L 305 15 A 12 12, 0, 0, 0, 305 39 L 363 39 Z" fill="white" fill-opacity='0.3' />
+          <rect x="365" y="15" width="70" height="24"
+            style="fill: white;" fill-opacity='0.3' />
+          <text id="setScore" fill="#fff" font-size="18" font-family="InriaSans" x="466" y="33" fill-opacity="1"
+            text-anchor="middle">
+            0 - 0
+          </text>
+          <text id="gameCount" fill="#fff" font-size="18" font-family="InriaSans" x="400" y="33" fill-opacity="1"
+            text-anchor="middle">
+            Game 1
+          </text>
+          <text id="score" fill="#fff" font-size="60" font-family="InriaSans" x="400" y="90" fill-opacity="1"
+            text-anchor="middle">
+            0-0
+          </text>
+          <text id="period" fill="#fff" font-size="18" font-family="InriaSans" x="334" y="33" fill-opacity="1"
+            text-anchor="middle"> 1st Set
+          </text>
+          <rect id="center_rect" x="255" y="230" width="290" height="110"
+            style="fill: black; stroke: grey; stroke-width: 0; stroke-opacity: 0;" fill-opacity='0' />
+          <text id="center_text" fill="#fff" font-size="38" font-family="InriaSans" x="400" y="280" fill-opacity="1"
+            text-anchor="middle"></text>
+          <text id="bottom_text" fill="#fff" font-size="32" font-family="InriaSans" x="400" y="310" fill-opacity="0.71"
+            text-anchor="middle"></text>
+          <text id="bottom2_text" fill="#fff" font-size="24" font-family="InriaSans" x="475" y="610" fill-opacity="0.71"
+            text-anchor="middle"></text>
+          <g transform="translate(20, -140)">
+            <g id="scoreTableGroup" transform="scale(0.8)">
+              <rect id="scoreTableBoard" x="320" y="300" width="310" height="100" rx="5" ry="5" fill='#204265'
+                fill-opacity='0' />
+              <rect id="scoreTable" x="330" y="325" width="290" height="70" rx="2" ry="2" fill='#204265'
+                fill-opacity='0.5' />
+              <text id="tableName1" fill="#fff" font-size="10" font-family="InriaSans" x="390" y="317"
+                fill-opacity="0.71" text-anchor="middle">1st Set</text>
+              <text id="tableName2" fill="#fff" font-size="10" font-family="InriaSans" x="440" y="317"
+                fill-opacity="0.71" text-anchor="middle">2nd Set</text>
+              <text id="tableName3" fill="#fff" font-size="10" font-family="InriaSans" x="490" y="317"
+                fill-opacity="0.71" text-anchor="middle">3rd Set</text>
+              <text id="tableName4" fill="#fff" font-size="10" font-family="InriaSans" x="540" y="317"
+                fill-opacity="0.71" text-anchor="middle">4th Set</text>
+              <text id="tableName5" fill="#fff" font-size="10" font-family="InriaSans" x="590" y="317"
+                fill-opacity="0.71" text-anchor="middle">5th Set</text>
+              <g id='scoreTableJerseyHome' transform='translate(355, 343)'>
+                <g fill="none" fill-rule="evenodd" filter="url(#shadow)" transform="scale(0.08)">
+                  <g transform="translate(-150, -150)">
+                    <defs>
+                      <radialGradient cx="50%" cy="0%" fx="50%" fy="0%" r="99.24%"
+                        gradientTransform="matrix(0 1 -.6221 0 .5 -.5)" id="5_no_radialGradient-1">
+                        <stop stop-opacity=".42" offset="0%"></stop>
+                        <stop stop-opacity=".55" offset="100%"></stop>
+                      </radialGradient>
+                      <path
+                        d="M97.75 274.21h-.05c43.2-.1 73.13-1.48 89.77-4.13-1.07-32.56-1.42-53.16-1.06-61.8l.05-1.17c.55-12.57 1.54-25.25 1.03-46.2-.22-12.15 2.97-34.04 2.17-36.65a19.64 19.64 0 011.55-1.93v-2.42c.95-1.22 4.24-9.09 4.24-10.52-1.56-.86-7.18-2.75-9.38-8.65-2.2-5.9-7.8-25.12-9.28-29.88-1.48-4.75-3.97-15.4-3.97-32.95-.73-14.59-1.42-19-4.04-19.87-2.63-.87-19.13-6.32-29.59-11.18-1.08-.5-1.69-.72-4.03-1.25-.77-1.3-3.86-3.56-5.72-5.37-5.98-1.3-9.3 3.06-31.71 3.07C75.3 3.3 72-1.06 66.02.24c-1.86 1.81-4.96 4.07-5.73 5.37-2.34.53-2.94.75-4.03 1.25-10.45 4.86-26.96 10.31-29.58 11.18-2.63.88-3.32 5.28-4.04 19.87 0 17.55-2.5 28.2-3.97 32.95-1.48 4.76-7.1 23.98-9.3 29.88-2.19 5.9-7.8 7.79-9.37 8.65 0 1.43 3.3 9.3 4.24 10.52v2.42c.18.15.7.8 1.55 1.93-.8 2.6 2.4 24.5 2.17 36.64-.52 21.6.54 34.41 1.08 47.37.36 8.65.01 29.25-1.05 61.8 16.63 2.66 46.56 4.04 89.76 4.14h-.05.05z"
+                        id="5_no_path-1"></path>
+                    </defs>
+                    <g fill="none" fill-rule="evenodd">
+                      <g transform="translate(58 20)">
+                        <mask id="5_no_mask-1" fill="#fff">
+                          <use xlink:href="#5_no_path-1"></use>
+                        </mask>
+                        <use id="homeBaseColorT" fill="#00ff00" xlink:href="#5_no_path-1"></use>
+                      </g>
+                      <g transform="">
+                        <g>
+                          <path
+                            d="M84.16 39.3c-.47.4-.92 1.57-1.34 3.53-.47 1.98-.93 8.2-1.18 15.06 0 13.29-1.37 24.43-4.21 33.3-3.45 12.23-6.56 21.56-8.58 27.76-1.78 7.1-6.7 9.33-9.85 10.82 0 .98 2.2 6.8 3.63 9.22 9.46-3.62 11.24-8.95 13.68-15.64 2.44-6.7 6.28-23.93 8.04-28.73 1.75-4.79 3.27-12.74 4.58-20.1 2.1-13.91 1.68-16.57 1.68-23.8 0-4.81.62-9.16 2.3-14.52-1.35.42-3.26 1.05-5.03 1.65-1.97.67-2.8.7-3.72 1.46zm143.1 0c.47.4.91 1.57 1.34 3.53.46 1.98.92 8.2 1.17 15.06 0 13.29 1.37 24.43 4.22 33.3 3.44 12.23 6.55 21.56 8.57 27.76 1.78 7.1 6.7 9.33 9.85 10.82 0 .98-2.2 6.8-3.63 9.22-9.46-3.62-11.23-8.95-13.68-15.64-2.44-6.7-6.28-23.93-8.03-28.73-1.76-4.79-3.27-12.74-4.59-20.1-2.1-13.91-1.67-16.57-1.67-23.8 0-4.81-.63-9.16-2.31-14.52 1.35.42 3.26 1.05 5.03 1.65 1.98.67 2.8.7 3.72 1.46z"
+                            fill="#ffffff"></path>
+                          <path
+                            d="M187.4 20.25a98.58 98.58 0 003.64 3.23c.88.73 4.31 4.05 5.09 5.14 0 7.58-.46 9.88-6.08 17.5-8.33 11.3-24.26 24.13-34.29 30.9-10.32-6.75-26.05-19.6-34.38-30.9-5.63-7.62-6.08-9.92-6.08-17.5.77-1.09 4.2-4.4 5.08-5.14.88-.74 1.97-1.68 3.65-3.23 6.27-1.3 8.8 2.88 30.34 3.05h.63c21.64-.16 26.12-4.34 32.4-3.05zm1.38 5.26c-.57-.27-1.92-.04-3.76.55-4.66 1.38-12.12 3.63-29.53 3.63-17.41 0-24.88-2.25-29.53-3.63-1.85-.6-3.2-.82-3.77-.55-.3 1.31.05 5.47 2.3 10.74 2.27 5.27 10.02 13.27 15.8 18.59 3.87 3.54 8.95 7.58 15.26 12.1l-.13-.09v.1l.07-.05.06.04v-.09l.57-.4a166 166 0 0014.13-11.22l.43-.4c5.79-5.31 13.54-13.31 15.8-18.58 2.25-5.27 2.6-9.43 2.3-10.74z"
+                            fill="#ffffff"></path>
+                        </g>
+                        <g>
+                          <path
+                            d="M155.76 288.84c-37.08 0-60.1 0-89.76-3.84v4.84c28.65 4.71 59 4.14 89.76 4.14 30.79 0 61.12.57 89.77-4.14V285c-32.73 3.83-52.7 3.84-89.77 3.84"
+                            fill-opacity=".1" fill="#E6E6E6"></path>
+                          <path
+                            d="M179.43 20.84c3.56-.87 6.15-1.06 7.76-.58 1.14 1.27 1.61 3.32 1.61 5.17-1.6-.52-5.1 1.22-9.2 2.02-7.27 1.67-15.75 2.18-24.4 2.18h.6-.6.6c-8.65 0-17.13-.51-24.4-2.18-4.1-.8-7.59-2.54-9.2-2.02 0-1.85.47-3.9 1.61-5.17 1.61-.48 4.2-.29 7.76.58 6.3 1.63 14.28 2.46 23.93 2.48 9.66-.02 17.63-.85 23.93-2.48z"
+                            fill-opacity=".3" fill="#000"></path>
+                          <path
+                            d="M127.02 6.97c1.84-.58 3.2-.8 3.76-.54.3 1.31-.05 5.46-2.3 10.74-2.26 5.27-10.01 13.27-15.8 18.59a165.79 165.79 0 01-15.26 12.1l.13-.1v.1l-.06-.05-.07.05v-.1l.13.1a165.92 165.92 0 01-15.25-12.1c-5.8-5.32-13.54-13.32-15.8-18.6-2.26-5.27-2.61-9.42-2.3-10.73.56-.27 1.91-.04 3.76.54 4.65 1.4 12.12 3.64 29.53 3.64 17.4 0 24.87-2.25 29.53-3.64"
+                            fill="url(#5_no_radialGradient-1)" transform="translate(58 19.08)"></path>
+                          <path
+                            d="M117.34 25.57c-.36.43-2.53 2.7-2.53 2.92-.01 4-.03 7.42 1.85 11.25 1.88 3.82 6.33 9.52 9.56 13.01 6.83 7.36 15.89 15.67 29.54 24.87 9.77-6.64 21.16-15.84 30.15-25.67l.78-.87c7-8.48 9.8-12.78 9.8-18.47 0-.69.2-3.26.16-4 0-.37-.92-1.44-2.77-3.21"
+                            stroke-opacity=".45" stroke="#050505"></path>
+                          <path
+                            d="M62.31 139.53c9.42-3.37 11.5-8.46 13.31-13.13a80.77 80.77 0 003.27-10.19c.86-3.4 2.41-8.44 3.38-12.5 1.64-6.86 3.71-11.33 5.06-18.03 1.09-5.38 3.6-19.25 3.73-25.9.14-6.63.02-9.52.1-11.15.2-4.59 1.11-9.1 2.73-13.57m155.2 104.4c-9.43-3.36-11.5-8.45-13.32-13.12a80.77 80.77 0 01-3.27-10.2c-.86-3.4-2.4-8.43-3.38-12.49-1.64-6.87-3.71-11.34-5.06-18.03-1.08-5.38-3.6-19.26-3.73-25.9-.13-6.63-.01-9.53-.09-11.16-.2-4.58-1.12-9.1-2.74-13.56"
+                            stroke-opacity=".5" stroke="#000" stroke-linejoin="round"></path>
+                          <path stroke-opacity=".5" stroke="#000"
+                            d="M155.7 293.71c42.8-.1 72.54-1.45 89.25-4.06-1.05-32.32-1.4-52.79-1.04-61.4l.05-1.16.33-6.98c.53-10.52 1.11-22.1.7-39.2-.12-6.46.73-15.68 1.43-23.3.6-6.6 1.13-12 .84-13.65a31.6 31.6 0 011.45-1.84v-2.4c.7-.61 3.88-8.02 4.21-10.04l-.54-.26c-2.26-1.07-6.82-3.26-8.77-8.5-1.64-4.4-5.16-16.14-7.47-23.85-.8-2.66-1.45-4.84-1.83-6.06-1.48-4.77-4-15.46-4-33.09-.36-7.41-.72-12.18-1.33-15.19-.28-1.35-.6-2.33-1-3.02a2.6 2.6 0 00-1.56-1.26c-3.18-1.05-19.17-6.37-29.41-11.12a4.42 4.42 0 01-1.44-.83c-.37-.3-.84-.66-2.16-1.36-.78-.88-2.04-2-3.32-3.13-.85-.76-1.7-1.52-2.44-2.23-2.53-.5-4.64-.01-7.84.7-4.54 1-11.21 2.47-24.08 2.47-12.85 0-19.46-1.47-23.97-2.47-3.2-.71-5.32-1.2-7.91-.7-.73.7-1.6 1.46-2.47 2.2-1.32 1.14-2.62 2.26-3.5 3.28-1.14.6-1.61.96-1.98 1.25-.4.31-.69.53-1.44.81-10.23 4.75-26.25 10.08-29.63 11.2-.54.18-.98.55-1.35 1.19-.41.69-.73 1.67-1 3.02-.62 3-.97 7.78-1.34 15.19 0 17.63-2.51 28.32-4 33.1-.38 1.21-1.03 3.4-1.83 6.05-2.3 7.7-5.83 19.45-7.46 23.84-1.96 5.25-6.52 7.44-8.78 8.51l-.54.26c.34 2.02 3.5 9.43 4.2 10.05v2.4c.28.3.77.9 1.54 2.28-.37 1.2.16 6.6.76 13.2.7 7.62 1.55 16.84 1.43 23.3-.41 17.1.17 28.69.7 39.2.14 2.76.27 5.45.38 8.14.36 8.61.01 29.08-1.04 61.4 16.54 2.59 45.87 3.94 89.2 4.06z">
+                          </path>
+                        </g>
+                      </g>
+                    </g>
+                    <text y="35%" x="50%" text-anchor="middle"
+                      class="sr-jersey3d__player-number srt-stroke-soccer-promotion-5" font-size="30" stroke-width="2"
+                      font-weight="300" dy="0.1em" dx="-0.05em" letter-spacing="2" fill="#ffffff"></text>
+                    <text y="35%" x="50%" text-anchor="middle" class="sr-jersey3d__player-number-overlay" font-size="30"
+                      stroke-width="0" font-weight="300" dy="0.1em" dx="-0.05em" letter-spacing="2" fill="#ffffff"
+                      stroke="transparent"></text>
+                  </g>
+                </g>
+              </g>
+              <g id='scoreTableJerseyAway' transform='translate(355, 377)'>
+                <g fill="none" fill-rule="evenodd" filter="url(#shadow)" transform="scale(0.08)">
+                  <g transform="translate(-150, -150)">
+                    <defs>
+                      <radialGradient cx="50%" cy="0%" fx="50%" fy="0%" r="99.24%"
+                        gradientTransform="matrix(0 1 -.6221 0 .5 -.5)" id="5_no_radialGradient-1">
+                        <stop stop-opacity=".42" offset="0%"></stop>
+                        <stop stop-opacity=".55" offset="100%"></stop>
+                      </radialGradient>
+                      <path
+                        d="M97.75 274.21h-.05c43.2-.1 73.13-1.48 89.77-4.13-1.07-32.56-1.42-53.16-1.06-61.8l.05-1.17c.55-12.57 1.54-25.25 1.03-46.2-.22-12.15 2.97-34.04 2.17-36.65a19.64 19.64 0 011.55-1.93v-2.42c.95-1.22 4.24-9.09 4.24-10.52-1.56-.86-7.18-2.75-9.38-8.65-2.2-5.9-7.8-25.12-9.28-29.88-1.48-4.75-3.97-15.4-3.97-32.95-.73-14.59-1.42-19-4.04-19.87-2.63-.87-19.13-6.32-29.59-11.18-1.08-.5-1.69-.72-4.03-1.25-.77-1.3-3.86-3.56-5.72-5.37-5.98-1.3-9.3 3.06-31.71 3.07C75.3 3.3 72-1.06 66.02.24c-1.86 1.81-4.96 4.07-5.73 5.37-2.34.53-2.94.75-4.03 1.25-10.45 4.86-26.96 10.31-29.58 11.18-2.63.88-3.32 5.28-4.04 19.87 0 17.55-2.5 28.2-3.97 32.95-1.48 4.76-7.1 23.98-9.3 29.88-2.19 5.9-7.8 7.79-9.37 8.65 0 1.43 3.3 9.3 4.24 10.52v2.42c.18.15.7.8 1.55 1.93-.8 2.6 2.4 24.5 2.17 36.64-.52 21.6.54 34.41 1.08 47.37.36 8.65.01 29.25-1.05 61.8 16.63 2.66 46.56 4.04 89.76 4.14h-.05.05z"
+                        id="5_no_path-1"></path>
+                    </defs>
+                    <g fill="none" fill-rule="evenodd">
+                      <g transform="translate(58 20)">
+                        <mask id="5_no_mask-1" fill="#fff">
+                          <use xlink:href="#5_no_path-1"></use>
+                        </mask>
+                        <use id="awayBaseColorT" fill="#00ff00" xlink:href="#5_no_path-1"></use>
+                      </g>
+                      <g transform="">
+                        <g>
+                          <path
+                            d="M84.16 39.3c-.47.4-.92 1.57-1.34 3.53-.47 1.98-.93 8.2-1.18 15.06 0 13.29-1.37 24.43-4.21 33.3-3.45 12.23-6.56 21.56-8.58 27.76-1.78 7.1-6.7 9.33-9.85 10.82 0 .98 2.2 6.8 3.63 9.22 9.46-3.62 11.24-8.95 13.68-15.64 2.44-6.7 6.28-23.93 8.04-28.73 1.75-4.79 3.27-12.74 4.58-20.1 2.1-13.91 1.68-16.57 1.68-23.8 0-4.81.62-9.16 2.3-14.52-1.35.42-3.26 1.05-5.03 1.65-1.97.67-2.8.7-3.72 1.46zm143.1 0c.47.4.91 1.57 1.34 3.53.46 1.98.92 8.2 1.17 15.06 0 13.29 1.37 24.43 4.22 33.3 3.44 12.23 6.55 21.56 8.57 27.76 1.78 7.1 6.7 9.33 9.85 10.82 0 .98-2.2 6.8-3.63 9.22-9.46-3.62-11.23-8.95-13.68-15.64-2.44-6.7-6.28-23.93-8.03-28.73-1.76-4.79-3.27-12.74-4.59-20.1-2.1-13.91-1.67-16.57-1.67-23.8 0-4.81-.63-9.16-2.31-14.52 1.35.42 3.26 1.05 5.03 1.65 1.98.67 2.8.7 3.72 1.46z"
+                            fill="#ffffff"></path>
+                          <path
+                            d="M187.4 20.25a98.58 98.58 0 003.64 3.23c.88.73 4.31 4.05 5.09 5.14 0 7.58-.46 9.88-6.08 17.5-8.33 11.3-24.26 24.13-34.29 30.9-10.32-6.75-26.05-19.6-34.38-30.9-5.63-7.62-6.08-9.92-6.08-17.5.77-1.09 4.2-4.4 5.08-5.14.88-.74 1.97-1.68 3.65-3.23 6.27-1.3 8.8 2.88 30.34 3.05h.63c21.64-.16 26.12-4.34 32.4-3.05zm1.38 5.26c-.57-.27-1.92-.04-3.76.55-4.66 1.38-12.12 3.63-29.53 3.63-17.41 0-24.88-2.25-29.53-3.63-1.85-.6-3.2-.82-3.77-.55-.3 1.31.05 5.47 2.3 10.74 2.27 5.27 10.02 13.27 15.8 18.59 3.87 3.54 8.95 7.58 15.26 12.1l-.13-.09v.1l.07-.05.06.04v-.09l.57-.4a166 166 0 0014.13-11.22l.43-.4c5.79-5.31 13.54-13.31 15.8-18.58 2.25-5.27 2.6-9.43 2.3-10.74z"
+                            fill="#ffffff"></path>
+                        </g>
+                        <g>
+                          <path
+                            d="M155.76 288.84c-37.08 0-60.1 0-89.76-3.84v4.84c28.65 4.71 59 4.14 89.76 4.14 30.79 0 61.12.57 89.77-4.14V285c-32.73 3.83-52.7 3.84-89.77 3.84"
+                            fill-opacity=".1" fill="#E6E6E6"></path>
+                          <path
+                            d="M179.43 20.84c3.56-.87 6.15-1.06 7.76-.58 1.14 1.27 1.61 3.32 1.61 5.17-1.6-.52-5.1 1.22-9.2 2.02-7.27 1.67-15.75 2.18-24.4 2.18h.6-.6.6c-8.65 0-17.13-.51-24.4-2.18-4.1-.8-7.59-2.54-9.2-2.02 0-1.85.47-3.9 1.61-5.17 1.61-.48 4.2-.29 7.76.58 6.3 1.63 14.28 2.46 23.93 2.48 9.66-.02 17.63-.85 23.93-2.48z"
+                            fill-opacity=".3" fill="#000"></path>
+                          <path
+                            d="M127.02 6.97c1.84-.58 3.2-.8 3.76-.54.3 1.31-.05 5.46-2.3 10.74-2.26 5.27-10.01 13.27-15.8 18.59a165.79 165.79 0 01-15.26 12.1l.13-.1v.1l-.06-.05-.07.05v-.1l.13.1a165.92 165.92 0 01-15.25-12.1c-5.8-5.32-13.54-13.32-15.8-18.6-2.26-5.27-2.61-9.42-2.3-10.73.56-.27 1.91-.04 3.76.54 4.65 1.4 12.12 3.64 29.53 3.64 17.4 0 24.87-2.25 29.53-3.64"
+                            fill="url(#5_no_radialGradient-1)" transform="translate(58 19.08)"></path>
+                          <path
+                            d="M117.34 25.57c-.36.43-2.53 2.7-2.53 2.92-.01 4-.03 7.42 1.85 11.25 1.88 3.82 6.33 9.52 9.56 13.01 6.83 7.36 15.89 15.67 29.54 24.87 9.77-6.64 21.16-15.84 30.15-25.67l.78-.87c7-8.48 9.8-12.78 9.8-18.47 0-.69.2-3.26.16-4 0-.37-.92-1.44-2.77-3.21"
+                            stroke-opacity=".45" stroke="#050505"></path>
+                          <path
+                            d="M62.31 139.53c9.42-3.37 11.5-8.46 13.31-13.13a80.77 80.77 0 003.27-10.19c.86-3.4 2.41-8.44 3.38-12.5 1.64-6.86 3.71-11.33 5.06-18.03 1.09-5.38 3.6-19.25 3.73-25.9.14-6.63.02-9.52.1-11.15.2-4.59 1.11-9.1 2.73-13.57m155.2 104.4c-9.43-3.36-11.5-8.45-13.32-13.12a80.77 80.77 0 01-3.27-10.2c-.86-3.4-2.4-8.43-3.38-12.49-1.64-6.87-3.71-11.34-5.06-18.03-1.08-5.38-3.6-19.26-3.73-25.9-.13-6.63-.01-9.53-.09-11.16-.2-4.58-1.12-9.1-2.74-13.56"
+                            stroke-opacity=".5" stroke="#000" stroke-linejoin="round"></path>
+                          <path stroke-opacity=".5" stroke="#000"
+                            d="M155.7 293.71c42.8-.1 72.54-1.45 89.25-4.06-1.05-32.32-1.4-52.79-1.04-61.4l.05-1.16.33-6.98c.53-10.52 1.11-22.1.7-39.2-.12-6.46.73-15.68 1.43-23.3.6-6.6 1.13-12 .84-13.65a31.6 31.6 0 011.45-1.84v-2.4c.7-.61 3.88-8.02 4.21-10.04l-.54-.26c-2.26-1.07-6.82-3.26-8.77-8.5-1.64-4.4-5.16-16.14-7.47-23.85-.8-2.66-1.45-4.84-1.83-6.06-1.48-4.77-4-15.46-4-33.09-.36-7.41-.72-12.18-1.33-15.19-.28-1.35-.6-2.33-1-3.02a2.6 2.6 0 00-1.56-1.26c-3.18-1.05-19.17-6.37-29.41-11.12a4.42 4.42 0 01-1.44-.83c-.37-.3-.84-.66-2.16-1.36-.78-.88-2.04-2-3.32-3.13-.85-.76-1.7-1.52-2.44-2.23-2.53-.5-4.64-.01-7.84.7-4.54 1-11.21 2.47-24.08 2.47-12.85 0-19.46-1.47-23.97-2.47-3.2-.71-5.32-1.2-7.91-.7-.73.7-1.6 1.46-2.47 2.2-1.32 1.14-2.62 2.26-3.5 3.28-1.14.6-1.61.96-1.98 1.25-.4.31-.69.53-1.44.81-10.23 4.75-26.25 10.08-29.63 11.2-.54.18-.98.55-1.35 1.19-.41.69-.73 1.67-1 3.02-.62 3-.97 7.78-1.34 15.19 0 17.63-2.51 28.32-4 33.1-.38 1.21-1.03 3.4-1.83 6.05-2.3 7.7-5.83 19.45-7.46 23.84-1.96 5.25-6.52 7.44-8.78 8.51l-.54.26c.34 2.02 3.5 9.43 4.2 10.05v2.4c.28.3.77.9 1.54 2.28-.37 1.2.16 6.6.76 13.2.7 7.62 1.55 16.84 1.43 23.3-.41 17.1.17 28.69.7 39.2.14 2.76.27 5.45.38 8.14.36 8.61.01 29.08-1.04 61.4 16.54 2.59 45.87 3.94 89.2 4.06z">
+                          </path>
+                        </g>
+                      </g>
+                    </g>
+                    <text y="35%" x="50%" text-anchor="middle"
+                      class="sr-jersey3d__player-number srt-stroke-soccer-promotion-5" font-size="30" stroke-width="2"
+                      font-weight="300" dy="0.1em" dx="-0.05em" letter-spacing="2" fill="#ffffff"></text>
+                    <text y="35%" x="50%" text-anchor="middle" class="sr-jersey3d__player-number-overlay" font-size="30"
+                      stroke-width="0" font-weight="300" dy="0.1em" dx="-0.05em" letter-spacing="2" fill="#ffffff"
+                      stroke="transparent"></text>
+                  </g>
+                </g>
+              </g>
+              <!-- <line id="scoreTableMiddleLine" x1="330" y1="360" x2="620" y2="360"
+                style=" stroke: rgb(10, 10, 10); stroke-width: 1; " stroke-opacity='0.8' />
+              <line id="scoreTableVerticalLine" x1="360" y1="325" x2="360" y2="395"
+                style=" stroke: rgb(10, 10, 10); stroke-width: 1; " stroke-opacity='0.8' /> -->
+              <text id="homeScore1" fill="#acf" font-size="18" font-family="InriaSans-Bold" x="390" y="350"
+                fill-opacity="1" text-anchor="middle" font-weight="900">-</text>
+              <text id="homeScore2" fill="#acf" font-size="18" font-family="InriaSans-Bold" x="440" y="350"
+                fill-opacity="1" text-anchor="middle" font-weight="900">-</text>
+              <text id="homeScore3" fill="#acf" font-size="18" font-family="InriaSans-Bold" x="490" y="350"
+                fill-opacity="1" text-anchor="middle" font-weight="900">-</text>
+              <text id="homeScore4" fill="#acf" font-size="18" font-family="InriaSans-Bold" x="540" y="350"
+                fill-opacity="1" text-anchor="middle" font-weight="900">-</text>
+              <text id="homeScore5" fill="#acf" font-size="18" font-family="InriaSans-Bold" x="590" y="350"
+                  fill-opacity="1" text-anchor="middle" font-weight="900">-</text>
+              <text id="awayScore1" fill="#afa" font-size="18" font-family="InriaSans-Bold" x="390" y="380"
+                fill-opacity="1" text-anchor="middle" font-weight="900">-</text>
+              <text id="awayScore2" fill="#afa" font-size="18" font-family="InriaSans-Bold" x="440" y="380"
+                fill-opacity="1" text-anchor="middle" font-weight="900">-</text>
+              <text id="awayScore3" fill="#afa" font-size="18" font-family="InriaSans-Bold" x="490" y="380"
+                fill-opacity="1" text-anchor="middle" font-weight="900">-</text>
+              <text id="awayScore4" fill="#afa" font-size="18" font-family="InriaSans-Bold" x="540" y="380"
+                fill-opacity="1" text-anchor="middle" font-weight="900">-</text>
+              <text id="awayScore5" fill="#afa" font-size="18" font-family="InriaSans-Bold" x="590" y="380"
+                fill-opacity="1" text-anchor="middle" font-weight="900">-</text>
+            </g>
+          </g>
+        </g>
+        <defs>
+          <linearGradient x1="3.967%" y1="3.362%" x2="82.02%" y2="94.266%" id="2_linearGradient-1">
+            <stop stop-color="#FFF" stop-opacity="0.085" offset="0%"></stop>
+            <stop stop-color="#FFF" stop-opacity="0.03" offset="20%"></stop>
+            <stop stop-color="#FFF" stop-opacity="0.1" offset="40%"></stop>
+            <stop stop-color="#FFF" stop-opacity="0.03" offset="60%"></stop>
+            <stop stop-color="#FFF" stop-opacity="0.06" offset="80%"></stop>
+            <stop stop-color="#FFF" stop-opacity="0" offset="100%"></stop>
+          </linearGradient>
+          <path
+            d="M156.55 16.76h26.58c5.06 0 6.75 2.6 9.78 4.58 1.6 0 7.04 2.88 11.71 5.03 4.67 2.14 35.4 15.24 48.96 20.8 13.56 5.58 16.52 16.46 18.16 20.57 5.45 10.84 4.32 29.53 4.32 37.16v27.13c0 2.15-.62 2.76-3.12 3.74-12.74 4.35-32.02 3.2-36.3 3.2-4.27 0-4.33-2.02-5.15-4.13-.54-1.41-.54-7.1 0-17.08-.55-2.82-1.08-3.64-1.6-2.48-3.62 7.08-8.92 44.57-10 55.91-1.1 11.34-.87 30-.87 36.29 0 6.29 2.2 21.94 2.92 28.22a971 971 0 0 0 3.31 24.54c.68 4.52 1.74 8.66 2.79 12.85.74 1.9 0 3.79-1.05 5.2-1.05 1.43-5.97 4.68-12.55 8.14-6.59 3.46-14.81 5.27-20.91 6.12-6.1.86-21.65 2.3-36.98 2.3-15.32 0-29.61-1.19-36.97-2.3-7.36-1.1-13.74-2.66-20.91-6.12-7.18-3.46-11.5-6.71-12.55-8.13-1.05-1.42-1.79-3.3-1.05-5.21 1.05-4.19 2.1-8.33 2.78-12.85a971.72 971.72 0 0 0 3.32-24.54c.72-6.28 2.92-21.93 2.92-28.22 0-6.29.22-24.95-.87-36.29-1.08-11.34-6.38-48.83-10-55.91-.52-1.16-1.06-.34-1.6 2.48.54 9.98.54 15.67 0 17.08-.83 2.1-.89 4.13-5.16 4.13-4.27 0-23.56 1.15-36.3-3.2-2.5-.98-3.1-1.6-3.1-3.74V104.9c0-7.63-1.14-26.32 4.3-37.16 1.65-4.1 4.6-15 18.17-20.56a2812.85 2812.85 0 0 0 48.96-20.81c4.67-2.15 10.1-5.03 11.7-5.03 3.04-1.97 4.73-4.58 9.8-4.58h26.56z"
+            id="2_path-2"></path>
+          <filter x="-5.7%" y="-3%" width="111.4%" height="109.6%" filterUnits="objectBoundingBox" id="2_filter-4">
+            <feMorphology radius="0.578" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dy="5" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="3.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" in="shadowBlurOuter1"></feColorMatrix>
+          </filter>
+          <path
+            d="M2.898 88.597c.07-.1-1.93-12-2.08-14.96-.84-16.8-.84-30.15 6.2-43.9 3.98-7.8 13.96-18.28 23.71-24.04 3.3-1.95 5.73-2.915 9.48-4.711 12.93-4.076 28.283-3.374 35.94-3.555 5.29-.035 23.164-.456 35.723 3.39 4.836 1.48 7.697 2.766 11.277 4.876 9.76 5.77 19.73 16.25 23.71 24.03 7.04 13.76 7.04 27.1 6.2 43.91-.15 2.92-2.08 14.5-2.08 14.95-.23-.26-.46-.13-.69.38-3.62 7.08-8.92 44.57-10 55.91-1.09 11.34-.87 30-.87 36.29 0 6.28 2.2 21.94 2.92 28.22.4 3.39 1.86 14.76 3.32 24.54.67 4.52 1.73 8.66 2.78 12.85.74 1.9 0 3.79-1.05 5.2-1.05 1.43-5.96 4.68-12.55 8.14-6.58 3.46-14.8 5.27-20.9 6.12-6.1.86-21.66 2.3-36.98 2.3-15.33 0-29.62-1.19-36.98-2.3-7.36-1.1-13.73-2.66-20.9-6.12-7.18-3.46-11.5-6.71-12.55-8.13-1.05-1.42-1.8-3.3-1.05-5.21 1.05-4.19 2.1-8.33 2.78-12.85a972.812 972.812 0 0 0 3.31-24.54c.73-6.28 2.92-21.94 2.92-28.22 0-6.29.22-24.95-.86-36.29-1.09-11.34-6.39-48.83-10-55.91-.24-.53-.48-.65-.72-.36"
+            id="2_path-5"></path>
+        </defs>
+        <g id='teams'>
+          <rect id="homeTeamNameRect" x="40" y="50" width="250" height="40" rx="20" ry="20"
+            style="fill: black; stroke: grey; stroke-width: 0; stroke-opacity: 0;" fill-opacity='1' />
+          <rect id="awayTeamNameRect" x="510" y="50" width="250" height="40" rx="20" ry="20"
+            style="fill: black; stroke: grey; stroke-width: 0; stroke-opacity: 0;" fill-opacity='1' />
+          <g transform='translate(-75, -200)'>
+            <g id="leftJersey" fill="none" fill-rule="evenodd" filter="url(#shadow)" transform="scale(0.15)">
+              <g transform="translate(766, 1600)">
+                <defs>
+                  <radialGradient cx="50%" cy="0%" fx="50%" fy="0%" r="99.24%"
+                    gradientTransform="matrix(0 1 -.6221 0 .5 -.5)" id="5_no_radialGradient-1">
+                    <stop stop-opacity=".42" offset="0%"></stop>
+                    <stop stop-opacity=".55" offset="100%"></stop>
+                  </radialGradient>
+                  <path
+                    d="M97.75 274.21h-.05c43.2-.1 73.13-1.48 89.77-4.13-1.07-32.56-1.42-53.16-1.06-61.8l.05-1.17c.55-12.57 1.54-25.25 1.03-46.2-.22-12.15 2.97-34.04 2.17-36.65a19.64 19.64 0 011.55-1.93v-2.42c.95-1.22 4.24-9.09 4.24-10.52-1.56-.86-7.18-2.75-9.38-8.65-2.2-5.9-7.8-25.12-9.28-29.88-1.48-4.75-3.97-15.4-3.97-32.95-.73-14.59-1.42-19-4.04-19.87-2.63-.87-19.13-6.32-29.59-11.18-1.08-.5-1.69-.72-4.03-1.25-.77-1.3-3.86-3.56-5.72-5.37-5.98-1.3-9.3 3.06-31.71 3.07C75.3 3.3 72-1.06 66.02.24c-1.86 1.81-4.96 4.07-5.73 5.37-2.34.53-2.94.75-4.03 1.25-10.45 4.86-26.96 10.31-29.58 11.18-2.63.88-3.32 5.28-4.04 19.87 0 17.55-2.5 28.2-3.97 32.95-1.48 4.76-7.1 23.98-9.3 29.88-2.19 5.9-7.8 7.79-9.37 8.65 0 1.43 3.3 9.3 4.24 10.52v2.42c.18.15.7.8 1.55 1.93-.8 2.6 2.4 24.5 2.17 36.64-.52 21.6.54 34.41 1.08 47.37.36 8.65.01 29.25-1.05 61.8 16.63 2.66 46.56 4.04 89.76 4.14h-.05.05z"
+                    id="5_no_path-1"></path>
+                </defs>
+                <g fill="none" fill-rule="evenodd">
+                  <g transform="translate(58 20)">
+                    <mask id="5_no_mask-1" fill="#fff">
+                      <use xlink:href="#5_no_path-1"></use>
+                    </mask>
+                    <use id="homeBaseColor" fill="#00ff00" xlink:href="#5_no_path-1"></use>
+                  </g>
+                  <g transform="">
+                    <g>
+                      <path
+                        d="M84.16 39.3c-.47.4-.92 1.57-1.34 3.53-.47 1.98-.93 8.2-1.18 15.06 0 13.29-1.37 24.43-4.21 33.3-3.45 12.23-6.56 21.56-8.58 27.76-1.78 7.1-6.7 9.33-9.85 10.82 0 .98 2.2 6.8 3.63 9.22 9.46-3.62 11.24-8.95 13.68-15.64 2.44-6.7 6.28-23.93 8.04-28.73 1.75-4.79 3.27-12.74 4.58-20.1 2.1-13.91 1.68-16.57 1.68-23.8 0-4.81.62-9.16 2.3-14.52-1.35.42-3.26 1.05-5.03 1.65-1.97.67-2.8.7-3.72 1.46zm143.1 0c.47.4.91 1.57 1.34 3.53.46 1.98.92 8.2 1.17 15.06 0 13.29 1.37 24.43 4.22 33.3 3.44 12.23 6.55 21.56 8.57 27.76 1.78 7.1 6.7 9.33 9.85 10.82 0 .98-2.2 6.8-3.63 9.22-9.46-3.62-11.23-8.95-13.68-15.64-2.44-6.7-6.28-23.93-8.03-28.73-1.76-4.79-3.27-12.74-4.59-20.1-2.1-13.91-1.67-16.57-1.67-23.8 0-4.81-.63-9.16-2.31-14.52 1.35.42 3.26 1.05 5.03 1.65 1.98.67 2.8.7 3.72 1.46z"
+                        fill="#ffffff"></path>
+                      <path
+                        d="M187.4 20.25a98.58 98.58 0 003.64 3.23c.88.73 4.31 4.05 5.09 5.14 0 7.58-.46 9.88-6.08 17.5-8.33 11.3-24.26 24.13-34.29 30.9-10.32-6.75-26.05-19.6-34.38-30.9-5.63-7.62-6.08-9.92-6.08-17.5.77-1.09 4.2-4.4 5.08-5.14.88-.74 1.97-1.68 3.65-3.23 6.27-1.3 8.8 2.88 30.34 3.05h.63c21.64-.16 26.12-4.34 32.4-3.05zm1.38 5.26c-.57-.27-1.92-.04-3.76.55-4.66 1.38-12.12 3.63-29.53 3.63-17.41 0-24.88-2.25-29.53-3.63-1.85-.6-3.2-.82-3.77-.55-.3 1.31.05 5.47 2.3 10.74 2.27 5.27 10.02 13.27 15.8 18.59 3.87 3.54 8.95 7.58 15.26 12.1l-.13-.09v.1l.07-.05.06.04v-.09l.57-.4a166 166 0 0014.13-11.22l.43-.4c5.79-5.31 13.54-13.31 15.8-18.58 2.25-5.27 2.6-9.43 2.3-10.74z"
+                        fill="#ffffff"></path>
+                    </g>
+                    <g>
+                      <path
+                        d="M155.76 288.84c-37.08 0-60.1 0-89.76-3.84v4.84c28.65 4.71 59 4.14 89.76 4.14 30.79 0 61.12.57 89.77-4.14V285c-32.73 3.83-52.7 3.84-89.77 3.84"
+                        fill-opacity=".1" fill="#E6E6E6"></path>
+                      <path
+                        d="M179.43 20.84c3.56-.87 6.15-1.06 7.76-.58 1.14 1.27 1.61 3.32 1.61 5.17-1.6-.52-5.1 1.22-9.2 2.02-7.27 1.67-15.75 2.18-24.4 2.18h.6-.6.6c-8.65 0-17.13-.51-24.4-2.18-4.1-.8-7.59-2.54-9.2-2.02 0-1.85.47-3.9 1.61-5.17 1.61-.48 4.2-.29 7.76.58 6.3 1.63 14.28 2.46 23.93 2.48 9.66-.02 17.63-.85 23.93-2.48z"
+                        fill-opacity=".3" fill="#000"></path>
+                      <path
+                        d="M127.02 6.97c1.84-.58 3.2-.8 3.76-.54.3 1.31-.05 5.46-2.3 10.74-2.26 5.27-10.01 13.27-15.8 18.59a165.79 165.79 0 01-15.26 12.1l.13-.1v.1l-.06-.05-.07.05v-.1l.13.1a165.92 165.92 0 01-15.25-12.1c-5.8-5.32-13.54-13.32-15.8-18.6-2.26-5.27-2.61-9.42-2.3-10.73.56-.27 1.91-.04 3.76.54 4.65 1.4 12.12 3.64 29.53 3.64 17.4 0 24.87-2.25 29.53-3.64"
+                        fill="url(#5_no_radialGradient-1)" transform="translate(58 19.08)"></path>
+                      <path
+                        d="M117.34 25.57c-.36.43-2.53 2.7-2.53 2.92-.01 4-.03 7.42 1.85 11.25 1.88 3.82 6.33 9.52 9.56 13.01 6.83 7.36 15.89 15.67 29.54 24.87 9.77-6.64 21.16-15.84 30.15-25.67l.78-.87c7-8.48 9.8-12.78 9.8-18.47 0-.69.2-3.26.16-4 0-.37-.92-1.44-2.77-3.21"
+                        stroke-opacity=".45" stroke="#050505"></path>
+                      <path
+                        d="M62.31 139.53c9.42-3.37 11.5-8.46 13.31-13.13a80.77 80.77 0 003.27-10.19c.86-3.4 2.41-8.44 3.38-12.5 1.64-6.86 3.71-11.33 5.06-18.03 1.09-5.38 3.6-19.25 3.73-25.9.14-6.63.02-9.52.1-11.15.2-4.59 1.11-9.1 2.73-13.57m155.2 104.4c-9.43-3.36-11.5-8.45-13.32-13.12a80.77 80.77 0 01-3.27-10.2c-.86-3.4-2.4-8.43-3.38-12.49-1.64-6.87-3.71-11.34-5.06-18.03-1.08-5.38-3.6-19.26-3.73-25.9-.13-6.63-.01-9.53-.09-11.16-.2-4.58-1.12-9.1-2.74-13.56"
+                        stroke-opacity=".5" stroke="#000" stroke-linejoin="round"></path>
+                      <path stroke-opacity=".5" stroke="#000"
+                        d="M155.7 293.71c42.8-.1 72.54-1.45 89.25-4.06-1.05-32.32-1.4-52.79-1.04-61.4l.05-1.16.33-6.98c.53-10.52 1.11-22.1.7-39.2-.12-6.46.73-15.68 1.43-23.3.6-6.6 1.13-12 .84-13.65a31.6 31.6 0 011.45-1.84v-2.4c.7-.61 3.88-8.02 4.21-10.04l-.54-.26c-2.26-1.07-6.82-3.26-8.77-8.5-1.64-4.4-5.16-16.14-7.47-23.85-.8-2.66-1.45-4.84-1.83-6.06-1.48-4.77-4-15.46-4-33.09-.36-7.41-.72-12.18-1.33-15.19-.28-1.35-.6-2.33-1-3.02a2.6 2.6 0 00-1.56-1.26c-3.18-1.05-19.17-6.37-29.41-11.12a4.42 4.42 0 01-1.44-.83c-.37-.3-.84-.66-2.16-1.36-.78-.88-2.04-2-3.32-3.13-.85-.76-1.7-1.52-2.44-2.23-2.53-.5-4.64-.01-7.84.7-4.54 1-11.21 2.47-24.08 2.47-12.85 0-19.46-1.47-23.97-2.47-3.2-.71-5.32-1.2-7.91-.7-.73.7-1.6 1.46-2.47 2.2-1.32 1.14-2.62 2.26-3.5 3.28-1.14.6-1.61.96-1.98 1.25-.4.31-.69.53-1.44.81-10.23 4.75-26.25 10.08-29.63 11.2-.54.18-.98.55-1.35 1.19-.41.69-.73 1.67-1 3.02-.62 3-.97 7.78-1.34 15.19 0 17.63-2.51 28.32-4 33.1-.38 1.21-1.03 3.4-1.83 6.05-2.3 7.7-5.83 19.45-7.46 23.84-1.96 5.25-6.52 7.44-8.78 8.51l-.54.26c.34 2.02 3.5 9.43 4.2 10.05v2.4c.28.3.77.9 1.54 2.28-.37 1.2.16 6.6.76 13.2.7 7.62 1.55 16.84 1.43 23.3-.41 17.1.17 28.69.7 39.2.14 2.76.27 5.45.38 8.14.36 8.61.01 29.08-1.04 61.4 16.54 2.59 45.87 3.94 89.2 4.06z">
+                      </path>
+                    </g>
+                  </g>
+                </g>
+                <text y="35%" x="50%" text-anchor="middle"
+                  class="sr-jersey3d__player-number srt-stroke-soccer-promotion-5" font-size="30" stroke-width="2"
+                  font-weight="300" dy="0.1em" dx="-0.05em" letter-spacing="2" fill="#ffffff"></text>
+                <text y="35%" x="50%" text-anchor="middle" class="sr-jersey3d__player-number-overlay" font-size="30"
+                  stroke-width="0" font-weight="300" dy="0.1em" dx="-0.05em" letter-spacing="2" fill="#ffffff"
+                  stroke="transparent"></text>
+              </g>
+            </g>
+            <g id="rightJersey" fill="none" fill-rule="evenodd" filter="url(#shadow)" transform="scale(0.15)">
+              <g transform="translate(5233, 1600)">
+                <defs>
+                  <radialGradient cx="50%" cy="0%" fx="50%" fy="0%" r="99.24%"
+                    gradientTransform="matrix(0 1 -.6221 0 .5 -.5)" id="5_no_radialGradient-1">
+                    <stop stop-opacity=".42" offset="0%"></stop>
+                    <stop stop-opacity=".55" offset="100%"></stop>
+                  </radialGradient>
+                  <path
+                    d="M97.75 274.21h-.05c43.2-.1 73.13-1.48 89.77-4.13-1.07-32.56-1.42-53.16-1.06-61.8l.05-1.17c.55-12.57 1.54-25.25 1.03-46.2-.22-12.15 2.97-34.04 2.17-36.65a19.64 19.64 0 011.55-1.93v-2.42c.95-1.22 4.24-9.09 4.24-10.52-1.56-.86-7.18-2.75-9.38-8.65-2.2-5.9-7.8-25.12-9.28-29.88-1.48-4.75-3.97-15.4-3.97-32.95-.73-14.59-1.42-19-4.04-19.87-2.63-.87-19.13-6.32-29.59-11.18-1.08-.5-1.69-.72-4.03-1.25-.77-1.3-3.86-3.56-5.72-5.37-5.98-1.3-9.3 3.06-31.71 3.07C75.3 3.3 72-1.06 66.02.24c-1.86 1.81-4.96 4.07-5.73 5.37-2.34.53-2.94.75-4.03 1.25-10.45 4.86-26.96 10.31-29.58 11.18-2.63.88-3.32 5.28-4.04 19.87 0 17.55-2.5 28.2-3.97 32.95-1.48 4.76-7.1 23.98-9.3 29.88-2.19 5.9-7.8 7.79-9.37 8.65 0 1.43 3.3 9.3 4.24 10.52v2.42c.18.15.7.8 1.55 1.93-.8 2.6 2.4 24.5 2.17 36.64-.52 21.6.54 34.41 1.08 47.37.36 8.65.01 29.25-1.05 61.8 16.63 2.66 46.56 4.04 89.76 4.14h-.05.05z"
+                    id="awayJerseyColor"></path>
+                </defs>
+                <g fill="none" fill-rule="evenodd">
+                  <g transform="translate(58 20)">
+                    <mask id="5_no_mask-1" fill="#fff">
+                      <use xlink:href="#awayJerseyColor"></use>
+                    </mask>
+                    <use id="awayBaseColor" fill="#ff0000" xlink:href="#awayJerseyColor"></use>
+                  </g>
+                  <g transform="">
+                    <g>
+                      <path
+                        d="M84.16 39.3c-.47.4-.92 1.57-1.34 3.53-.47 1.98-.93 8.2-1.18 15.06 0 13.29-1.37 24.43-4.21 33.3-3.45 12.23-6.56 21.56-8.58 27.76-1.78 7.1-6.7 9.33-9.85 10.82 0 .98 2.2 6.8 3.63 9.22 9.46-3.62 11.24-8.95 13.68-15.64 2.44-6.7 6.28-23.93 8.04-28.73 1.75-4.79 3.27-12.74 4.58-20.1 2.1-13.91 1.68-16.57 1.68-23.8 0-4.81.62-9.16 2.3-14.52-1.35.42-3.26 1.05-5.03 1.65-1.97.67-2.8.7-3.72 1.46zm143.1 0c.47.4.91 1.57 1.34 3.53.46 1.98.92 8.2 1.17 15.06 0 13.29 1.37 24.43 4.22 33.3 3.44 12.23 6.55 21.56 8.57 27.76 1.78 7.1 6.7 9.33 9.85 10.82 0 .98-2.2 6.8-3.63 9.22-9.46-3.62-11.23-8.95-13.68-15.64-2.44-6.7-6.28-23.93-8.03-28.73-1.76-4.79-3.27-12.74-4.59-20.1-2.1-13.91-1.67-16.57-1.67-23.8 0-4.81-.63-9.16-2.31-14.52 1.35.42 3.26 1.05 5.03 1.65 1.98.67 2.8.7 3.72 1.46z"
+                        fill="#ffffff"></path>
+                      <path
+                        d="M187.4 20.25a98.58 98.58 0 003.64 3.23c.88.73 4.31 4.05 5.09 5.14 0 7.58-.46 9.88-6.08 17.5-8.33 11.3-24.26 24.13-34.29 30.9-10.32-6.75-26.05-19.6-34.38-30.9-5.63-7.62-6.08-9.92-6.08-17.5.77-1.09 4.2-4.4 5.08-5.14.88-.74 1.97-1.68 3.65-3.23 6.27-1.3 8.8 2.88 30.34 3.05h.63c21.64-.16 26.12-4.34 32.4-3.05zm1.38 5.26c-.57-.27-1.92-.04-3.76.55-4.66 1.38-12.12 3.63-29.53 3.63-17.41 0-24.88-2.25-29.53-3.63-1.85-.6-3.2-.82-3.77-.55-.3 1.31.05 5.47 2.3 10.74 2.27 5.27 10.02 13.27 15.8 18.59 3.87 3.54 8.95 7.58 15.26 12.1l-.13-.09v.1l.07-.05.06.04v-.09l.57-.4a166 166 0 0014.13-11.22l.43-.4c5.79-5.31 13.54-13.31 15.8-18.58 2.25-5.27 2.6-9.43 2.3-10.74z"
+                        fill="#ffffff"></path>
+                    </g>
+                    <g>
+                      <path
+                        d="M155.76 288.84c-37.08 0-60.1 0-89.76-3.84v4.84c28.65 4.71 59 4.14 89.76 4.14 30.79 0 61.12.57 89.77-4.14V285c-32.73 3.83-52.7 3.84-89.77 3.84"
+                        fill-opacity=".1" fill="#E6E6E6"></path>
+                      <path
+                        d="M179.43 20.84c3.56-.87 6.15-1.06 7.76-.58 1.14 1.27 1.61 3.32 1.61 5.17-1.6-.52-5.1 1.22-9.2 2.02-7.27 1.67-15.75 2.18-24.4 2.18h.6-.6.6c-8.65 0-17.13-.51-24.4-2.18-4.1-.8-7.59-2.54-9.2-2.02 0-1.85.47-3.9 1.61-5.17 1.61-.48 4.2-.29 7.76.58 6.3 1.63 14.28 2.46 23.93 2.48 9.66-.02 17.63-.85 23.93-2.48z"
+                        fill-opacity=".3" fill="#000"></path>
+                      <path
+                        d="M127.02 6.97c1.84-.58 3.2-.8 3.76-.54.3 1.31-.05 5.46-2.3 10.74-2.26 5.27-10.01 13.27-15.8 18.59a165.79 165.79 0 01-15.26 12.1l.13-.1v.1l-.06-.05-.07.05v-.1l.13.1a165.92 165.92 0 01-15.25-12.1c-5.8-5.32-13.54-13.32-15.8-18.6-2.26-5.27-2.61-9.42-2.3-10.73.56-.27 1.91-.04 3.76.54 4.65 1.4 12.12 3.64 29.53 3.64 17.4 0 24.87-2.25 29.53-3.64"
+                        fill="url(#5_no_radialGradient-1)" transform="translate(58 19.08)"></path>
+                      <path
+                        d="M117.34 25.57c-.36.43-2.53 2.7-2.53 2.92-.01 4-.03 7.42 1.85 11.25 1.88 3.82 6.33 9.52 9.56 13.01 6.83 7.36 15.89 15.67 29.54 24.87 9.77-6.64 21.16-15.84 30.15-25.67l.78-.87c7-8.48 9.8-12.78 9.8-18.47 0-.69.2-3.26.16-4 0-.37-.92-1.44-2.77-3.21"
+                        stroke-opacity=".45" stroke="#050505"></path>
+                      <path
+                        d="M62.31 139.53c9.42-3.37 11.5-8.46 13.31-13.13a80.77 80.77 0 003.27-10.19c.86-3.4 2.41-8.44 3.38-12.5 1.64-6.86 3.71-11.33 5.06-18.03 1.09-5.38 3.6-19.25 3.73-25.9.14-6.63.02-9.52.1-11.15.2-4.59 1.11-9.1 2.73-13.57m155.2 104.4c-9.43-3.36-11.5-8.45-13.32-13.12a80.77 80.77 0 01-3.27-10.2c-.86-3.4-2.4-8.43-3.38-12.49-1.64-6.87-3.71-11.34-5.06-18.03-1.08-5.38-3.6-19.26-3.73-25.9-.13-6.63-.01-9.53-.09-11.16-.2-4.58-1.12-9.1-2.74-13.56"
+                        stroke-opacity=".5" stroke="#000" stroke-linejoin="round"></path>
+                      <path stroke-opacity=".5" stroke="#000"
+                        d="M155.7 293.71c42.8-.1 72.54-1.45 89.25-4.06-1.05-32.32-1.4-52.79-1.04-61.4l.05-1.16.33-6.98c.53-10.52 1.11-22.1.7-39.2-.12-6.46.73-15.68 1.43-23.3.6-6.6 1.13-12 .84-13.65a31.6 31.6 0 011.45-1.84v-2.4c.7-.61 3.88-8.02 4.21-10.04l-.54-.26c-2.26-1.07-6.82-3.26-8.77-8.5-1.64-4.4-5.16-16.14-7.47-23.85-.8-2.66-1.45-4.84-1.83-6.06-1.48-4.77-4-15.46-4-33.09-.36-7.41-.72-12.18-1.33-15.19-.28-1.35-.6-2.33-1-3.02a2.6 2.6 0 00-1.56-1.26c-3.18-1.05-19.17-6.37-29.41-11.12a4.42 4.42 0 01-1.44-.83c-.37-.3-.84-.66-2.16-1.36-.78-.88-2.04-2-3.32-3.13-.85-.76-1.7-1.52-2.44-2.23-2.53-.5-4.64-.01-7.84.7-4.54 1-11.21 2.47-24.08 2.47-12.85 0-19.46-1.47-23.97-2.47-3.2-.71-5.32-1.2-7.91-.7-.73.7-1.6 1.46-2.47 2.2-1.32 1.14-2.62 2.26-3.5 3.28-1.14.6-1.61.96-1.98 1.25-.4.31-.69.53-1.44.81-10.23 4.75-26.25 10.08-29.63 11.2-.54.18-.98.55-1.35 1.19-.41.69-.73 1.67-1 3.02-.62 3-.97 7.78-1.34 15.19 0 17.63-2.51 28.32-4 33.1-.38 1.21-1.03 3.4-1.83 6.05-2.3 7.7-5.83 19.45-7.46 23.84-1.96 5.25-6.52 7.44-8.78 8.51l-.54.26c.34 2.02 3.5 9.43 4.2 10.05v2.4c.28.3.77.9 1.54 2.28-.37 1.2.16 6.6.76 13.2.7 7.62 1.55 16.84 1.43 23.3-.41 17.1.17 28.69.7 39.2.14 2.76.27 5.45.38 8.14.36 8.61.01 29.08-1.04 61.4 16.54 2.59 45.87 3.94 89.2 4.06z">
+                      </path>
+                    </g>
+                  </g>
+                </g>
+                <text y="35%" x="50%" text-anchor="middle"
+                  class="sr-jersey3d__player-number srt-stroke-soccer-promotion-5" font-size="30" stroke-width="2"
+                  font-weight="300" dy="0.1em" dx="-0.05em" letter-spacing="2" fill="#ffffff"></text>
+                <text y="35%" x="50%" text-anchor="middle" class="sr-jersey3d__player-number-overlay" font-size="30"
+                  stroke-width="0" font-weight="300" dy="0.1em" dx="-0.05em" letter-spacing="2" fill="#ffffff"
+                  stroke="transparent"></text>
+              </g>
+            </g>
+            <text id="homeTeamName" fill="#fff" font-size="20" font-family="InriaSans" x="165" y="277" fill-opacity="1"
+              text-anchor="start">
+              HOME
+            </text>
+            <text id="awayTeamName" fill="#fff" font-size="20" font-family="InriaSans" x="785" y="277" fill-opacity="1"
+              text-anchor="end">
+              AWAY
+            </text>
+          </g>
+        </g>
+        <g transform='translate(600, 15)'>
+          <a id = 'link' href="../Tennis-2D/index.html">
+            <rect x="0" y="0" width="50" height="24" style="fill:white; fill-opacity: 0.3" rx='12' ry = '12'/>
+            <text fill="#fff" font-size="18" font-family="InriaSans" x="25" y="12" fill='#fff' fill-opacity="1" text-anchor="middle" alignment-baseline="middle">
+              2D
+            </text>
+          </a>
+        </g>
+      </g>
+    </svg>
+  </div>
+</body>
+
+</html>
