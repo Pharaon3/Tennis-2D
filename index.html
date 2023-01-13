@@ -3,7 +3,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Tennis 3D version</title>
+  <title>Tennis 2D version</title>
   <meta name="title" content="Tennis SVG Test" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="./js/controller.js"></script>
@@ -93,8 +93,8 @@
       </defs>
       <g id='scale' transform='scale(1)'>
         <g id="pitch">
-          <image href="./media/pitch.png" x="0" y="0" width="800" />
-          <!-- <polygon id = "pitch-poly" points="123, 238 677, 238 750, 350 50, 350 " style="fill:red;fill-opacity:0.5;" /> -->
+          <image href="./media/curt.png" x="0" y="0" width="800" />
+          <!-- <polygon id = "pitch-poly" points="70, 110 730, 110 730, 510 70, 510 " style="fill:red;fill-opacity:0.5;" /> -->
         </g>
         <g id="Ball_Begin">
           <polygon id="homeKickPolygon" points="500, 500 726, 476 782, 536" style="fill: url(#none);" />
@@ -151,15 +151,15 @@
           </g>
 
 
-          <rect id="center_rect" x="210" y="200" width="380" height="60" style="
+          <rect id="center_rect" x="210" y="250" width="380" height="60" style="
               fill: black;
               stroke: grey;
               stroke-width: 0;
               stroke-opacity: 1;
             " fill-opacity='0' />
-          <text id="center_text" fill="#fff" font-size="38" font-family="InriaSans" x="400" y="260" fill-opacity="1"
+          <text id="center_text" fill="#fff" font-size="38" font-family="InriaSans" x="400" y="310" fill-opacity="1"
             text-anchor="middle"></text>
-          <text id="bottom_text" fill="#fff" font-size="30" font-family="InriaSans" x="400" y="300" fill-opacity="0.71"
+          <text id="bottom_text" fill="#fff" font-size="30" font-family="InriaSans" x="400" y="350" fill-opacity="0.71"
             text-anchor="middle"></text>
 
           <g id="stateLabels" transform='translate(400,500)' filter="url(#shadow)" style='display: none;'>
@@ -250,31 +250,23 @@
             0-0
           </text>
           <text id="period" fill="#fff" font-size="18" font-family="InriaSans" x="334" y="33" fill-opacity="1"
-            text-anchor="middle"> 1st Set
+            text-anchor="middle"> 1st set
           </text>
-          <rect id="center_rect" x="255" y="230" width="290" height="110"
-            style="fill: black; stroke: grey; stroke-width: 0; stroke-opacity: 0;" fill-opacity='0' />
-          <text id="center_text" fill="#fff" font-size="38" font-family="InriaSans" x="400" y="280" fill-opacity="1"
-            text-anchor="middle"></text>
-          <text id="bottom_text" fill="#fff" font-size="32" font-family="InriaSans" x="400" y="310" fill-opacity="0.71"
-            text-anchor="middle"></text>
-          <text id="bottom2_text" fill="#fff" font-size="24" font-family="InriaSans" x="475" y="610" fill-opacity="0.71"
-            text-anchor="middle"></text>
-          <g transform="translate(20, -140)">
+          <g transform="translate(20, -130)" filter="url(#shadow)">
             <g id="scoreTableGroup" transform="scale(0.8)">
               <rect id="scoreTableBoard" x="320" y="300" width="310" height="100" rx="5" ry="5" fill='#204265'
                 fill-opacity='0' />
               <rect id="scoreTable" x="330" y="325" width="290" height="70" rx="2" ry="2" fill='#204265'
                 fill-opacity='0.5' />
-              <text id="tableName1" fill="#fff" font-size="10" font-family="InriaSans" x="390" y="317"
+              <text id="tableName1" fill="#fff" font-size="14" font-family="InriaSans" x="390" y="317"
                 fill-opacity="0.71" text-anchor="middle">1st Set</text>
-              <text id="tableName2" fill="#fff" font-size="10" font-family="InriaSans" x="440" y="317"
+              <text id="tableName2" fill="#fff" font-size="14" font-family="InriaSans" x="440" y="317"
                 fill-opacity="0.71" text-anchor="middle">2nd Set</text>
-              <text id="tableName3" fill="#fff" font-size="10" font-family="InriaSans" x="490" y="317"
+              <text id="tableName3" fill="#fff" font-size="14" font-family="InriaSans" x="490" y="317"
                 fill-opacity="0.71" text-anchor="middle">3rd Set</text>
-              <text id="tableName4" fill="#fff" font-size="10" font-family="InriaSans" x="540" y="317"
+              <text id="tableName4" fill="#fff" font-size="14" font-family="InriaSans" x="540" y="317"
                 fill-opacity="0.71" text-anchor="middle">4th Set</text>
-              <text id="tableName5" fill="#fff" font-size="10" font-family="InriaSans" x="590" y="317"
+              <text id="tableName5" fill="#fff" font-size="14" font-family="InriaSans" x="590" y="317"
                 fill-opacity="0.71" text-anchor="middle">5th Set</text>
               <g id='scoreTableJerseyHome' transform='translate(355, 343)'>
                 <g fill="none" fill-rule="evenodd" filter="url(#shadow)" transform="scale(0.08)">
@@ -579,10 +571,10 @@
           </g>
         </g>
         <g transform='translate(600, 15)'>
-          <a id = 'link' href="../Tennis-2D/index.html">
+          <a id = 'link' href="../Tennis-3D/index.html">
             <rect x="0" y="0" width="50" height="24" style="fill:white; fill-opacity: 0.3" rx='12' ry = '12'/>
             <text fill="#fff" font-size="18" font-family="InriaSans" x="25" y="12" fill='#fff' fill-opacity="1" text-anchor="middle" alignment-baseline="middle">
-              2D
+              3D
             </text>
           </a>
         </g>

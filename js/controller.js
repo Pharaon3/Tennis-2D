@@ -12,9 +12,9 @@ var serveSide, isServe;
 var serveTeam;
 var bestofsets;
 
-var topLeft = 123, topPosition = 238
-var pitchX = 700, pitchY = 112
-var w1 = pitchX / 2, w2 = 554 / 2, hp = pitchY
+var topLeft = 70, topPosition = 110
+var pitchX = 660, pitchY = 400
+var w1 = pitchX / 2, w2 = 660 / 2, hp = pitchY
 var x1 = 0, y1 = hp / 2, x2 = 0, y2 = hp / 2
 var xb = 0, yb = 0
 var t, L, H, ll, hh, h1, k
@@ -124,7 +124,7 @@ function load() {
       handleEventData(data.d);
     }
   };
-  document.getElementById('link').setAttribute('href', '../Tennis-2D/index.html?eventId=' + eventId)
+  document.getElementById('link').setAttribute('href', '../Tennis-3D/index.html?eventId=' + eventId)
 }
 function bounceBall() {
   if (!setTimer) return
@@ -661,12 +661,12 @@ function setState(homeState, awayState, side) {
   document.getElementById('homeState').textContent = homeState
   document.getElementById('awayState').textContent = awayState
   if (side > 0) {
-    document.getElementById('homeStateG').setAttribute('transform', 'translate(100, 300)')
-    document.getElementById('awayStateG').setAttribute('transform', 'translate(680, 270)')
+    document.getElementById('homeStateG').setAttribute('transform', 'translate(90, 400)')
+    document.getElementById('awayStateG').setAttribute('transform', 'translate(710, 200)')
   }
   else {
-    document.getElementById('homeStateG').setAttribute('transform', 'translate(120, 270)')
-    document.getElementById('awayStateG').setAttribute('transform', 'translate(700, 300)')
+    document.getElementById('homeStateG').setAttribute('transform', 'translate(90, 200)')
+    document.getElementById('awayStateG').setAttribute('transform', 'translate(710, 400)')
   }
 }
 function removeState() {
@@ -926,11 +926,11 @@ function changeScreenSize() {
   screenHeight = window.innerHeight
   screenWidth = window.innerWidth
 
-  scale = min(screenWidth / 800, screenHeight / 425);
+  scale = min(screenWidth / 800, screenHeight / 533);
 
   document.getElementById('scale').setAttribute('transform', 'scale(' + scale + ')')
   document.getElementById('svg').setAttribute('width', 800 * scale)
-  document.getElementById('svg').setAttribute('height', 425 * scale)
+  document.getElementById('svg').setAttribute('height', 533 * scale)
 }
 function min(a, b) {
   if (a > b) return b;
