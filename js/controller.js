@@ -124,7 +124,7 @@ function load() {
       handleEventData(data.d);
     }
   };
-  document.getElementById('link').setAttribute('href', '../Tennis-3D/index.html?eventId=' + eventId)
+  document.getElementById('link').setAttribute('href', '../tennis-3d/index.html?eventId=' + eventId)
 }
 function bounceBall() {
   if (!setTimer) return
@@ -259,7 +259,7 @@ function stepInitialize() {
         y_1_1 = mapY(x1, y1)
         x_1_2 = mapX(x2, y2)
         y_1_2 = mapY(x2, y2)
-        setState('first serve fault', '', serveSide)
+        setState('First serve fault', '', serveSide)
       }
       if (gameState[currentState]['team'] == 'away') {
         x1 = w1;
@@ -270,7 +270,7 @@ function stepInitialize() {
         y_1_1 = mapY(x1, y1)
         x_1_2 = mapX(x2, y2)
         y_1_2 = mapY(x2, y2)
-        setState('', 'first serve fault', serveSide)
+        setState('', 'First serve fault', serveSide)
       }
     }
     else if (gameState[currentState]['type'] == 'score_change_tennis') {
@@ -329,7 +329,7 @@ function stepInitialize() {
       x2 = 1000 * w1;
       y1 = hp * 1000;
       y2 = hp * 1000;
-      setCenterFrame('first serve fault', teamNames[gameState[currentState]['team']])
+      setCenterFrame('First serve fault', teamNames[gameState[currentState]['team']])
     }
     else if (gameState[currentState]['type'] == 'ball_in_play') {
       if (!isServe) serveSide = - serveSide
